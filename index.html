@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Dropdown</title>
+</head>
+<body>
+    <form id="myForm" action="/submit" method="post">
+        <label for="cities">Choose a city:</label>
+        <select id="cities" name="city" onchange="updateHotels()">
+            <!-- Populated dynamically using JavaScript -->
+        </select>
+
+        <br>
+
+        <label for="hotels">Choose a hotel:</label>
+        <select id="hotels" name="hotel">
+            <!-- Populated dynamically using JavaScript -->
+        </select>
+
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function updateHotels() {
+            var citySelect = document.getElementById("cities");
+            var hotelSelect = document.getElementById("hotels");
+
+            // Clear the existing options
+            hotelSelect.innerHTML = "";
+
+            // Get the selected city
+            var selectedCity = citySelect.value;
+
+            // Get the list of hotels for the selected city
+            var hotels = hotelData[selectedCity];
+
+            // Populate the hotel dropdown with the fetched data
+            hotels.forEach(hotel => {
+                var option = document.createElement("option");
+                option.value = hotel;
+                option.text = hotel;
+                hotelSelect.add(option);
+            });
+        }
+
+        // Fetch data from Tornado endpoint
+        fetch("/get_data")
+            .then(response => response.json())
+            .then(data => {
+                // Populate the city dropdown with the fetched data
+                var citySelect = document.getElementById("cities");
+                data.cities.forEach(city => {
+                    var option = document.createElement("option");
+                    option.value = city;
+                    option.text = city;
+                    citySelect.add(option);
+                });
+
+                // Set the hotelData variable for later use
+                window.hotelData = data.hotels;
+            });
+    </script>
+</body>
+</html>
