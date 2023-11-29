@@ -1,14 +1,9 @@
 from handler.lib import *
 
 class DataHandler(tornado.web.RequestHandler):
+    def initialize(self, data_service):
+        self.data_service = data_service
+
     async def get(self):
-        db = self.application.db
-
-        region_hotel_dict = await db.get_region_hotel_dict()
-        region_list = list(region_hotel_dict.keys())
-
-        data = {
-            "cities": region_list,
-            "hotels": region_hotel_dict
-        }
+        data = await self.data_service.get_data()
         self.write(dict(data))

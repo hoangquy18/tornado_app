@@ -1,4 +1,5 @@
 from handler.lib import *
+from pipeline import pipeline as p
 
 class PredictHandler(tornado.web.RequestHandler):
     async def get(self):
