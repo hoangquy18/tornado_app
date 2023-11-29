@@ -1,4 +1,10 @@
 import torch
+import yaml
+
+def load_db_config(config_path):
+    with open("config.yaml", 'r') as stream:
+        data_loaded = yaml.safe_load(stream)
+    return data_loaded['database']
 
 def find_id_region(region_dict,region_name):
     for i in range(len(region_dict)):
