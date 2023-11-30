@@ -1,33 +1,22 @@
-import tornado
 import asyncio
-from as_dbconnect import *
 import os
-from pipeline import pipeline as p            
-from handler import datahandler, homehandler, predicthandler, submithandler
+import utils
+from handler import DatabaseConnection
+from handler.Application import Application
+from services import *
 
-class Application(tornado.web.Application):
-        def __init__(self,user_name, password, db_name):
-            handlers = [
-                tornado.web.URLSpec(r"/", datahandler,name='home'),
-                tornado.web.URLSpec(r"/predict", PredictHandler, name="predict"),
-                tornado.web.URLSpec(r"/get_data", DataHandler, name="data"),
-                tornado.web.URLSpec(r"/submit", SubmitHandler, name="submit"),
-            ]
-
-            super(Application, self).__init__(handlers)
-            self.db = Database(user_name, password, db_name)
-
-def make_app(**kwargs):
-    return Application(**kwargs)
+def make_app(*args,**kwargs):
+    return Application(*args,**kwargs)
 
 async def main():
-    db_atr = {
-        "user_name": "nhq188",
-        "password": "fiora123",
-        "db_name": 'User'
-    }
+    db_atr = utils.load_db_config("./config.yaml")
+    db_connect = await DatabaseConnection(**db_atr)
+    dbase = db_connect.connection
     
-    app = make_app(**db_atr)
+    db_service = DatabaseService(db = dbase)
+    data_service = DataService(db_service=db_service)
+
+    app = make_app(db_service = db_service, data_service = data_service)
 
     app.listen(8888)
     shutdown_event = asyncio.Event()

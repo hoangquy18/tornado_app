@@ -14,7 +14,7 @@ class DatabaseService:
         try:
             region_dict =  self.db_collection['region'].find()
             region_dict = await region_dict.to_list(length=100)
-
+            
         except ServerSelectionTimeoutError:
             raise ConnectionRefusedError("CANNOT CONNECT TO DATABASE!!!")
 
