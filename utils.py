@@ -2,7 +2,7 @@ import torch
 import yaml
 
 def load_db_config(config_path):
-    with open("config.yaml", 'r') as stream:
+    with open("./config.yaml", 'r') as stream:
         data_loaded = yaml.safe_load(stream)
     return data_loaded['database']
 

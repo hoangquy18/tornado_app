@@ -4,8 +4,6 @@ from transformers import AutoTokenizer,AutoModel
 import torch
 from underthesea import word_tokenize
 import numpy as np
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 ASPECT = ["Facilities", "Service", "Public_area", "Location", "Food", "Room"]
 POLARITY = ['None','Negative', "Neutral", "Positive"]
@@ -13,7 +11,7 @@ PRETRAINED_PATH = "vinai/phobert-base"
 
 def load_model():
     try:
-        checkpoint = torch.load("text_model.pth",map_location=torch.device('cpu'))
+        checkpoint = torch.load("./text_model.pth",map_location=torch.device('cpu'))
         model = pmodel.MyModel(PRETRAINED_PATH,len(ASPECT),4)
         model.load_state_dict(checkpoint['model_state_dict'])
     except FileNotFoundError:
