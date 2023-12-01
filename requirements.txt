@@ -1,4 +1,4 @@
-torch==2.1.0
+torch
 transformers
 emoji==2.8.0
 motor==3.3.2
