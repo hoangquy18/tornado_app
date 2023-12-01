@@ -21,7 +21,7 @@ class DatabaseConnection:
         """
             GET DATABASE FROM DB_NAME
         """
-        client = motor.motor_tornado.MotorClient(self._url,serverSelectionTimeoutMS=2000)
+        client = motor.motor_tornado.MotorClient(self._url,serverSelectionTimeoutMS=20000)
         try:
             db = client[self.db_name]
             _ = db['region'].find()
