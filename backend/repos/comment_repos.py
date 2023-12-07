@@ -1,17 +1,34 @@
 from utils import db_utils 
 
-async def find_comment_hotel(db_collection, hotel_dict, hotel_name):
-
-    hotel_id = db_utils.find_id_hotel(hotel_dict,hotel_name)
-    comments = []
-
-    if hotel_id == -1:
-        raise IndexError("THIS HOTEL NOT EXIST!!!")
+async def find_comment_hotel(db_collection, hotel_name):
     
-    comment_hotel = db_collection['comment'].find({"hotel_id": hotel_id})
-    comment_hotel = await comment_hotel.to_list(length=1000)
-    
-    for obj in comment_hotel:
-        comments.append(obj['comment'])
+    try:
+        hotel_comment_query = db_collection.hotel.aggregate([
+                {
+                    "$match": {
+                        "hotel_name": f"{hotel_name}"
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "comment",          
+                        "localField": "_id",       
+                        "foreignField": "hotel_id",  
+                        "as": "comments"             
+                    }
+                },
+                {
+                    "$project": {
+                        "hotel_name": 1,         
+                        "comments.comment": 1               
+                    }
+                }
+            ])
+        
+        hotel_comment_query = await hotel_comment_query.to_list(length=10000)
+    except:
+        pass
+
+    comments = list(map(lambda x: x['comment'],hotel_comment_query[0]['comments']))
 
     return comments

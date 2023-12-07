@@ -15,7 +15,7 @@ class Application(tornado.web.Application):
                 tornado.web.URLSpec(r"/submit", SubmitHandler, name="submit"),
             ]
 
-            super(Application, self).__init__(handlers)
+            super(Application, self).__init__(handlers, debug = True)
 
 def make_app(*args,**kwargs):
     return Application(*args,**kwargs)

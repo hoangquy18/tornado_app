@@ -1,0 +1,79 @@
+{
+  "count": 12,
+  "fields": [
+    {
+      "name": "_id",
+      "path": [
+        "_id"
+      ],
+      "count": 12,
+      "type": "ObjectId",
+      "probability": 1,
+      "hasDuplicates": false,
+      "types": [
+        {
+          "name": "ObjectId",
+          "path": [
+            "_id"
+          ],
+          "count": 12,
+          "probability": 1,
+          "unique": 12,
+          "hasDuplicates": false,
+          "values": [
+            "6547a82ecb829df44d2c0d34",
+            "6547a82ecb829df44d2c0d35",
+            "6547a82ecb829df44d2c0d37",
+            "6547a82ecb829df44d2c0d30",
+            "6547a82ecb829df44d2c0d32",
+            "6547a82ecb829df44d2c0d2f",
+            "6547a82ecb829df44d2c0d31",
+            "6547a82ecb829df44d2c0d2d",
+            "6547a82ecb829df44d2c0d36",
+            "6547a82ecb829df44d2c0d2e",
+            "6547a82ecb829df44d2c0d38",
+            "6547a82ecb829df44d2c0d33"
+          ],
+          "bsonType": "ObjectId"
+        }
+      ]
+    },
+    {
+      "name": "region_name",
+      "path": [
+        "region_name"
+      ],
+      "count": 12,
+      "type": "String",
+      "probability": 1,
+      "hasDuplicates": false,
+      "types": [
+        {
+          "name": "String",
+          "path": [
+            "region_name"
+          ],
+          "count": 12,
+          "probability": 1,
+          "unique": 12,
+          "hasDuplicates": false,
+          "values": [
+            "da nang",
+            "ho chi minh",
+            "ha long",
+            "vung tau",
+            "nha trang",
+            "hue",
+            "hoi an",
+            "phu quoc",
+            "da lat",
+            "ha noi",
+            "phan thiet",
+            "quy nhon"
+          ],
+          "bsonType": "String"
+        }
+      ]
+    }
+  ]
+}

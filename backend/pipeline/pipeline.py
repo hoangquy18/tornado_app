@@ -3,6 +3,7 @@ from transformers import AutoTokenizer,AutoModel
 import torch
 from underthesea import word_tokenize
 import numpy as np
+from repos import comment_repos
 
 ASPECT = ["Facilities", "Service", "Public_area", "Location", "Food", "Room"]
 POLARITY = ['None','Negative', "Neutral", "Positive"]
@@ -34,22 +35,27 @@ def predict(model, comments):
     n_sample = len(comments)
     tokenizer = AutoTokenizer.from_pretrained(PRETRAINED_PATH)
     for i in range(n_sample):
-        comment_tokenize = tokenizer(comments[i],padding='max_length', max_length = 150,truncation=True,return_tensors='pt')
+        try:
+            comment_tokenize = tokenizer(comments[i],padding='max_length', max_length = 150,truncation=True,return_tensors='pt')
 
-        model_output = model(comment_tokenize)
-        model_output = model(comment_tokenize)
-        _, y_pred = torch.max(torch.nn.functional.softmax(model_output,dim=-1),dim=-1)
-        y_pred = y_pred[0].detach().cpu()
+            model_output = model(comment_tokenize)
 
-        text_y_pred = []
+            _, y_pred = torch.max(torch.nn.functional.softmax(model_output,dim=-1),dim=-1)
+            y_pred = y_pred[0].detach().cpu()
 
-        for i in range(len(y_pred)):
-            if y_pred[i] != 0:
-                asp = ASPECT[i]
-                pol = POLARITY[y_pred[i]]
-                text_y_pred.append(f"{asp}#{pol}")
-        output.extend(text_y_pred)
+            text_y_pred = []
 
+            for i in range(len(y_pred)):
+                if y_pred[i] != 0:
+                    asp = ASPECT[i]
+                    pol = POLARITY[y_pred[i]]
+                    text_y_pred.append(f"{asp}#{pol}")
+            output.extend(text_y_pred)
+        except ValueError:
+            print("NONE COMMENT APPEARED")
+        except:
+            pass
+        
     output = np.array(output)
     unique, counts = np.unique(output, return_counts=True)
     summary_dict = dict(zip(unique, counts))
@@ -58,9 +64,8 @@ def predict(model, comments):
         summary_dict[k] = int(v)
     return summary_dict
     
-async def wrapper_predict_from_selected(model_path,db_service,selected_hotel):
-    hotel_dict = await db_service.get_hotel()
-    comments = await db_service.get_comment_hotel(hotel_dict,selected_hotel)
+async def wrapper_predict_from_selected(model_path,db_collection,selected_hotel):
+    comments = await comment_repos.find_comment_hotel(db_collection,selected_hotel)
     model = load_model(model_path)
     out = predict(model, comments)
     return out
