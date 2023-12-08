@@ -1,4 +1,5 @@
 from utils import db_utils 
+from pymongo.errors import ServerSelectionTimeoutError
 
 async def find_comment_hotel(db_collection, hotel_name):
     
@@ -26,8 +27,8 @@ async def find_comment_hotel(db_collection, hotel_name):
             ])
         
         hotel_comment_query = await hotel_comment_query.to_list(length=10000)
-    except:
-        pass
+    except ServerSelectionTimeoutError:
+        raise ConnectionRefusedError("CANNOT CONNECT TO DATABASE!!!")
 
     comments = list(map(lambda x: x['comment'],hotel_comment_query[0]['comments']))
 
