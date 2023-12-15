@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Dropdown</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dynamic Dropdown</title>
+        <link rel="stylesheet" href="/style.css"> <!-- Đường dẫn đến tệp CSS của bạn -->
+
+    </head>
+    <body>
     <form id="myForm" action="/submit" method="post">
         <label for="cities">Choose a city:</label>
         <select id="cities" name="city" onchange="updateHotels()">
@@ -64,6 +66,7 @@
                 // Set the hotelData variable for later use
                 window.hotelData = data.hotels;
             });
+        
     </script>
 </body>
 </html>

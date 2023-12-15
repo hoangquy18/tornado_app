@@ -13,9 +13,16 @@ class Application(tornado.web.Application):
                 tornado.web.URLSpec(r"/predict", PredictHandler,{"path": os.path.dirname(os.path.abspath(__name__))}, name="predict"),
                 tornado.web.URLSpec(r"/get_data", DataHandler ,name="data"),
                 tornado.web.URLSpec(r"/submit", SubmitHandler, name="submit"),
-            ]
+                (r'/(.*)', tornado.web.StaticFileHandler, {'path': 'fontend'})
 
-            super(Application, self).__init__(handlers, debug = True)
+            ]
+            # settings = {
+            #     "debug": True,
+            #     "template_path": os.path.join(os.path.dirname(os.path.abspath(__name__)), "fontend"),
+            #     "static_path": os.path.join(os.path.dirname(os.path.abspath(__name__)), "fontend")
+            # }
+
+            super(Application, self).__init__(handlers)
 
 def make_app(*args,**kwargs):
     return Application(*args,**kwargs)
