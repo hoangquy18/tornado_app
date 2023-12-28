@@ -1,6 +1,8 @@
 from handler.lib import *
 from services.dataservice import DataService
-class DataHandler(tornado.web.RequestHandler):
+from logger import LoggerMixin
+
+class DataHandler(tornado.web.RequestHandler,LoggerMixin):
     def initialize(self):
         self.data_service = DataService()
 
@@ -14,6 +16,6 @@ class DataHandler(tornado.web.RequestHandler):
             self.write(dict(data))
         except Exception as ex:
             self.write("Cannot get data from Database!")
-            
+            self.logger.error("Cannot connect to database",exc_info=True)
             raise tornado.web.HTTPError(log_message = str(ex))
     

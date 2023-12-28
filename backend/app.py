@@ -14,7 +14,6 @@ class Application(tornado.web.Application):
                 tornado.web.URLSpec(r"/get_data", DataHandler ,name="data"),
                 tornado.web.URLSpec(r"/submit", SubmitHandler, name="submit"),
                 (r'/(.*)', tornado.web.StaticFileHandler, {'path': 'fontend'})
-
             ]
             # settings = {
             #     "debug": True,
